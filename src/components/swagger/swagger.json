@@ -1,0 +1,85 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Cash Logistic Manager (CLM) - Core",
+      "version": "v1"
+    },
+    "servers": [
+      {
+        "description": "Local server",
+        "url": "/api/v1"
+       }
+    ],
+    "paths": {
+        "/login": {
+            "get": {
+              "operationId": "login",
+              "summary": "Authentication User",
+              "description":"Authentication using encoded USER and PASSWORD in base 64 and included on header. If try set USER and PASSWORD on Authorize (basicAuth).",
+              "tags": [
+                "Login"
+              ],
+              "parameters": [],
+              "responses": {
+                "200": {
+                  "description": "Json Web Token"
+                },
+                "400": {
+                  "description": "InvalidCredentialsError"
+                },
+                "401": {
+                "description": "InvalidCredentialsError"
+                },
+                "500": {
+                "description": "InternalServerError" 
+                }
+              }
+            }
+        },
+      "/reports/current-position": {
+        "get": {
+          "operationId": "reportCurrentPosition",
+          "summary": "Generate Report Current Position",
+          "description": "Return the report current positions in the xlsx format. If try set JWT on Authorize (bearerAuth).",
+          "tags": [
+            "Reports"
+          ],
+          "parameters": [
+              
+          ],
+          "responses": {
+            "200": {
+              "description": "A XLSX file."
+       
+            },
+            "401":{
+                "description": "UnauthorizedError"
+            }
+          }
+        }
+      }
+    },
+    "components": {
+        "securitySchemes": {
+            "basicAuth": {
+            "name": "Basic Authorization",
+            "type": "http",
+            "in":"header",
+            "scheme": "basic"
+            },
+            "bearerAuth": {
+            "name": "Bearer Authorization",
+            "type": "http",
+            "in":"header",
+            "scheme": "bearer",
+            "bearerFormat": "JWT"
+            }
+        }
+    },
+    "security": [
+        {"basicAuth": []},
+        {"bearerAuth": []}
+    ]
+    
+}
+  

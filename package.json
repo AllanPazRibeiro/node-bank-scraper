@@ -1,0 +1,42 @@
+{
+  "name": "testwarren",
+  "version": "1.0.0",
+  "description": "Bank Scrapper",
+  "main": "index.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=development NODE_PATH=src node .",
+    "dev": "cross-env NODE_ENV=development NODE_PATH=src nodemon --inspect=9230 .",
+    "test": "cross-env NODE_ENV=development NODE_PATH=src nyc --reporter=lcov mocha \"test/**\"",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "Allan Ribeiro",
+  "license": "ISC",
+  "dependencies": {
+    "activedirectory": "^0.7.2",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "cross-env": "^6.0.3",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-status-monitor": "^1.2.7",
+    "jade": "^1.11.0",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.24.0",
+    "mongoose": "^5.7.8",
+    "morgan": "^1.9.1",
+    "swagger-ui-express": "^4.1.2",
+    "winston": "^3.2.1",
+    "winston-daily-rotate-file": "^4.2.1"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "eslint": "^6.6.0",
+    "mocha": "^6.2.2",
+    "nodemon": "^1.19.4",
+    "nyc": "^14.1.1"
+  }
+}
