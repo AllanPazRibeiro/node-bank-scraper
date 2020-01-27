@@ -12,8 +12,8 @@ let {
 	whtPageOptions,
 	getLoginPageOptions,
 	postLoginPageOptions,
-	getLoginSenhaPageOptions,
-	postLoginSenhaPageOptions,
+	getPassPageOptions,
+	postPassPageOptions,
 	getBalanceOptions
 } = require('./headers.js')
 
@@ -21,50 +21,45 @@ let lastUsedCookies;
 
 const login = (branch, account, password) => {
 	return requestPromise = new Promise(async function(resolve, reject) {
-		let initialPage = request(initialPageOptions);
+		
+		let initialPage = await request(initialPageOptions);
 		if(!initialPage) {
 			reject();
 		}
 	
-		if(!lastUsedCookies) {
-			lastUsedCookies = getCookies(initialPage.res);
-		}
+		lastUsedCookies = await getCookies(initialPage.res);
+
+		logger.info("lastUsedCookies " + JSON.stringify(lastUsedCookies));
 	
 		options = [
 			formPageOptions,
 			whtPageOptions,
 			getLoginPageOptions,
 			postLoginPageOptions,
-			getLoginSenhaPageOptions,
-			postLoginSenhaPageOptions
+			getPassPageOptions,
+			postPassPageOptions
 		];
 	
 		postLoginPageOptions.setDataField("agencia", branch);
 		postLoginPageOptions.setDataField("conta", account);
-		postLoginSenhaPageOptions.setDataField("Senha", password);
+		postPassPageOptions.setDataField("Senha", password);
 
+		let reduceCookies;
 		options.reduce(function(promise, currOptions, index) {
 			return promise
-			.then(function (prevOptionsResult) {
-				
-				currOptions.handleCookies(lastUsedCookies, setTimeout(() => {
-					getCookies(prevOptionsResult.res)
-				}, 3000));
-				
-				logger.info("currOptions " + JSON.stringify(currOptions));
-				try {
-					let result = request(currOptions);
-					
-					logger.info("result " + JSON.stringify(result.res));
-					if(index >= options.length - 1) {
-						resolve();
-					}
-					return result;
-		
-				} catch (err) {
-					reject();
+			.then(async function (prevOptionsResult) {
+				if(prevOptionsResult) {
+					reduceCookies = await getCookies(prevOptionsResult.res);
+					await currOptions.handleCookies(lastUsedCookies, reduceCookies);
 				}
-				
+				logger.info("currOptions " + JSON.stringify(currOptions))
+				let result = await request(currOptions);
+
+				if(index >= options.length - 1) {
+					resolve();
+				}
+				return result;
+
 			})
 		}, Promise.resolve(initialPage));
 	})
@@ -121,6 +116,7 @@ const request = (options) => {
 		if(options.method == "POST") {
 			if(options.data) {
 				const postData = querystring.stringify(options.data);
+				logger.info('postData ' + JSON.stringify(postData))
 				req.write(postData);
 			}
 		}
@@ -130,19 +126,18 @@ const request = (options) => {
 	});
 };
 
-const getCookies = (srcOptions) => {
+const getCookies = function(srcOptions) {
+	let cookies;
 	if(srcOptions) {
 		let strCookies = srcOptions.headers["set-cookie"].toString();
-		let cookies = strCookies
-		.replace(/path=\/; HttpOnly,/g,'')
-		.replace(/path=\/,/g,'')
-		.replace(/path=\//g,'');
-		logger.info("cookies " + cookies);
-		return cookies;
-	}	
+		cookies = strCookies
+		.replace(/HttpOnly\W+/g,'')
+		.replace(/path\W+/g,'');
+	}
+	return cookies;
 };
 
-const ParsedNumberFormatToFloat = (parsedNumber) => {
+const ParsedNumberFormatToFloat = function(parsedNumber) {
 	return parsedNumber.replace('.', '').replace(',', '.');
 };
 

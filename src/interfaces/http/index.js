@@ -29,7 +29,7 @@ app.use('/api', apiRouter)
 apiRouter.use('/v1', v1Router);
 
 app.set('view engine', 'jade');
-app.get('/home', function (req, res) {
+app.get('/', function (req, res) {
 	res.render('front');
 });
 

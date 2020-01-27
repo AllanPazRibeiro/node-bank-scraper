@@ -42,8 +42,7 @@ const POSTOptions = {
 	'Cookie': 'CONFIG=INITEXT=N&CARTAO=N&LEITORA=&Usar_Leitora=N&Impressao_Automatica=N&Contraste=1&CaseTeclado=&TF=11',
 	'Upgrade-Insecure-Requests': '1',
 	'Cache-Control': 'max-age=0',
-	'Content-Type': 'application/x-www-form-urlencoded',
-	'Date': `${moment().format('llll')} GMT`
+	'Content-Type': 'application/x-www-form-urlencoded'
 };
 
 function checkerMethod_is200(res) {
@@ -79,18 +78,18 @@ postLoginPageOptions.setData({
 });
 postLoginPageOptions.setCheckerMethod(checkerMethod_is302);
 
-let getLoginSenhaPageOptions = new BanrisulOptionsGet();
-getLoginSenhaPageOptions.setPath('/brb/link/Brbw4Dhw_Login_Senha.aspx');
+let getPassPageOptions = new BanrisulOptionsGet();
+getPassPageOptions.setPath('/brb/link/Brbw4Dhw_Login_Senha.aspx');
 
-let postLoginSenhaPageOptions = new BanrisulOptionsPost();
-postLoginSenhaPageOptions.setPath('/brb/link/Brbw4Dhw_Login_Senha.aspx');
-postLoginSenhaPageOptions.setData({
+let postPassPageOptions = new BanrisulOptionsPost();
+postPassPageOptions.setPath('/brb/link/Brbw4Dhw_Login_Senha.aspx');
+postPassPageOptions.setData({
 	__VIEWSTATE: '/wEPDwUKMTQ5MDIzODY2OA9kFgICAw9kFgICAQ9kFgICBQ8WAh4JaW5uZXJodG1sBR7CuyBBY2Vzc28gw6AgY29udGEgY29tIENhcnTDo29kZMGhIpzKHj8eWNbL1muON2VUAjcM',
 	__VIEWSTATEGENERATOR: 'AEA9E94F',
 	__EVENTVALIDATION: '/wEdAAIVK9fWcOCiH+WNRt+XRikkffys55W/gmrV2SyCTq7i980Zg83RwfPxXluYjYce0BCK7Znd',
 	Sequencia: ''
 });
-postLoginSenhaPageOptions.setCheckerMethod(checkerMethod_is302);
+postPassPageOptions.setCheckerMethod(checkerMethod_is302);
 
 let getUsuarioLogadoPageOptions = new BanrisulOptionsGet();
 getUsuarioLogadoPageOptions.setPath('/brb/link/Brbw4Dhw_Usuario_Logado.aspx');
@@ -107,8 +106,8 @@ module.exports = {
 	whtPageOptions,
 	getLoginPageOptions,
 	postLoginPageOptions,
-	getLoginSenhaPageOptions,
-	postLoginSenhaPageOptions,
+	getPassPageOptions,
+	postPassPageOptions,
 	getUsuarioLogadoPageOptions,
 	getMenuPageOptions,
 	getSaldoOptions
