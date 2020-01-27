@@ -15,7 +15,8 @@ Object.keys(envConfig).forEach((key) => {
 });
 
 const environmentVariables = [
-	{ name: 'PORT', required: true, printOnStart: true }
+	{ name: 'PORT', required: true, printOnStart: true },
+	{ name: 'TZ', required: false, printOnStart: true }
 ];
 
 

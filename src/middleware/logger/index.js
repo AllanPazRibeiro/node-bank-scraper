@@ -12,4 +12,4 @@ module.exports= morgan(function (tokens, req, res) {
       tokens.res(req, res, 'content-length'), '-',
       tokens['response-time'](req, res), 'ms'
     ].join(' ')
-  }, transport);
+}, transport);

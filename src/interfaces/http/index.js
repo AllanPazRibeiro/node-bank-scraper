@@ -1,3 +1,4 @@
+require('infra/config')
 const logger = require('infra/logger');
 const http = require('http');
 const express = require('express');

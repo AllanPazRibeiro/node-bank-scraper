@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "cross-env NODE_ENV=development NODE_PATH=src node .",
-    "dev": "cross-env NODE_ENV=development NODE_PATH=src nodemon --inspect=9230 .",
+    "dev": "cross-env  TZ='America/Sao_Paulo' NODE_ENV=development NODE_PATH=src nodemon --inspect=9230 .",
     "test": "cross-env NODE_ENV=development NODE_PATH=src nyc --reporter=lcov mocha \"test/**\"",
     "lint": "eslint ."
   },
@@ -26,6 +26,7 @@
     "jade": "^1.11.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
+    "moment-timezone": "^0.5.27",
     "mongoose": "^5.7.8",
     "morgan": "^1.9.1",
     "swagger-ui-express": "^4.1.2",

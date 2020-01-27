@@ -1,4 +1,6 @@
 let BaseOptions = require('./../options');
+const moment = require('moment-timezone');
+moment().tz('America/Sao_Paulo');
 
 class BanrisulOptions extends BaseOptions {
 	constructor() {
@@ -28,7 +30,7 @@ class BanrisulOptionsPost extends BanrisulOptions {
 const GETOptions = {
 	'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
 	'Accept-Language': 'en-US,en;q=0.9,de;q=0.8,pt;q=0.7',
-	'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
+	'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36',
 	'Cookie': 'CONFIG=INITEXT=N&CARTAO=N&LEITORA=&Usar_Leitora=N&Impressao_Automatica=N&Contraste=1&CaseTeclado=&TF=11',
 	'Upgrade-Insecure-Requests': '1'
 };
@@ -36,11 +38,12 @@ const GETOptions = {
 const POSTOptions = {
 	'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
 	'Accept-Language': 'en-US,en;q=0.9,de;q=0.8,pt;q=0.7',
-	'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
+	'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36',
 	'Cookie': 'CONFIG=INITEXT=N&CARTAO=N&LEITORA=&Usar_Leitora=N&Impressao_Automatica=N&Contraste=1&CaseTeclado=&TF=11',
 	'Upgrade-Insecure-Requests': '1',
 	'Cache-Control': 'max-age=0',
-	'Content-Type': 'application/x-www-form-urlencoded'
+	'Content-Type': 'application/x-www-form-urlencoded',
+	'Date': `${moment().format('llll')} GMT`
 };
 
 function checkerMethod_is200(res) {
