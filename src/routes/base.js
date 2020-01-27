@@ -2,7 +2,7 @@ const routes = require('express').Router();
 const logger = require('./../infra/logger');
 const banrisul = require('../components/banrisul');
 
-routes.post('/login', async function (req, res) {	
+routes.post('/login', async function (req, res) {
 	let branch = req.body.branch;
 	let account = req.body.account;
 	let password = req.body.password;
@@ -12,9 +12,7 @@ routes.post('/login', async function (req, res) {
 
 
 function login(req, res, branch, account, password) {
-	banrisul.login(branch, account, password => {
-		logger.info(`Login Succed ${banrisul.data}`);
-	});
+	banrisul.login(branch, account, password);
 }
 
 module.exports = routes;

@@ -19,15 +19,15 @@ let {
 
 let lastUsedCookies;
 
-const login = async (branch, account, password) => {
+const login = (branch, account, password) => {
 	return requestPromise = new Promise(async function(resolve, reject) {
-		let initialPage = await request(initialPageOptions);
+		let initialPage = request(initialPageOptions);
 		if(!initialPage) {
 			reject();
 		}
 	
 		if(!lastUsedCookies) {
-			lastUsedCookies = await GetCookies(initialPage.res);
+			lastUsedCookies = getCookies(initialPage.res);
 		}
 	
 		options = [
@@ -43,13 +43,18 @@ const login = async (branch, account, password) => {
 		postLoginPageOptions.setDataField("conta", account);
 		postLoginSenhaPageOptions.setDataField("Senha", password);
 
-		options.reduce(async function(promise, currOptions, index) {
+		options.reduce(function(promise, currOptions, index) {
 			return promise
-			.then(async function (prevOptionsResult) {
-				await currOptions.handleCookies(lastUsedCookies, await GetCookies(prevOptionsResult.res));
+			.then(function (prevOptionsResult) {
+				
+				currOptions.handleCookies(lastUsedCookies, setTimeout(() => {
+					getCookies(prevOptionsResult.res)
+				}, 3000));
+				
 				logger.info("currOptions " + JSON.stringify(currOptions));
 				try {
-					let result = await request(currOptions);
+					let result = request(currOptions);
+					
 					logger.info("result " + JSON.stringify(result.res));
 					if(index >= options.length - 1) {
 						resolve();
@@ -65,7 +70,7 @@ const login = async (branch, account, password) => {
 	})
 };
 
-const getBalance = async () => {
+const getBalance = () => {
 	return requestPromise = new Promise(async function(resolve, reject) {
 		let data = {};
 	
@@ -90,14 +95,14 @@ const getBalance = async () => {
 	});
 };
 
-const request = async (options) => {
+const request = (options) => {
 	return requestPromise = new Promise(function(resolve, reject) {
 		const req = https.request(options, (res) => {
 			let body;
 			res.setEncoding('utf8');
 			res.on('data', (chunk) => {
 				body = chunk;
-				logger.info("body " + JSON.stringify(body));
+				logger.info("body " + body);
 			});
 			res.on('end', () => {
 				if(options.isResultCorrect(res)) {
@@ -125,13 +130,14 @@ const request = async (options) => {
 	});
 };
 
-const GetCookies = (srcOptions) => {
+const getCookies = (srcOptions) => {
 	if(srcOptions) {
 		let strCookies = srcOptions.headers["set-cookie"].toString();
 		let cookies = strCookies
 		.replace(/path=\/; HttpOnly,/g,'')
 		.replace(/path=\/,/g,'')
 		.replace(/path=\//g,'');
+		logger.info("cookies " + cookies);
 		return cookies;
 	}	
 };
