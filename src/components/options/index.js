@@ -1,5 +1,5 @@
 class BaseOptions {
-	constructor() {	}
+	constructor() {}
 
 	setMethod(method) {
 		this.method = method;

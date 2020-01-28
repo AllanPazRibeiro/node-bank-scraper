@@ -66,7 +66,7 @@ const login = (branch, account, password) => {
 };
 
 const getBalance = () => {
-	return requestPromise = new Promise(async function(resolve, reject) {
+	return requestPromise = new Promise(function(resolve, reject) {
 		let data = {};
 	
 		if(!lastUsedCookies) {
@@ -75,7 +75,7 @@ const getBalance = () => {
 	
 		getBalanceOptions.appendCookies(lastUsedCookies);
 	
-		let getBalance = await request(getBalanceOptions);
+		let getBalance =  request(getBalanceOptions);
 	
 		let freeBalance = getBalance.body.match(/contaCorrente_campo1&quot;&gt;&amp;nbsp;R\$ ([\d|,|.]*?)&amp;nbsp;&lt;\/td&gt;&#xD;&#xA;&lt;\/tr&gt;&#xD;&#xA;&lt;tr class=/)[1]
 	

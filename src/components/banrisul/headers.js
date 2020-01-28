@@ -2,12 +2,14 @@ let BaseOptions = require('./../options');
 const moment = require('moment-timezone');
 moment().tz('America/Sao_Paulo');
 
+const logger = require('../../infra/logger')
+
 class BanrisulOptions extends BaseOptions {
 	constructor() {
 		super();
 		this.setHostname('ww8.banrisul.com.br');
 		this.setPort(443);
-		this.setCheckerMethod(checkerMethod_is200);
+		this.setCheckerMethod(checkIfNotErrorCode);
 	}
 }
 
@@ -45,12 +47,9 @@ const POSTOptions = {
 	'Content-Type': 'application/x-www-form-urlencoded'
 };
 
-function checkerMethod_is200(res) {
-  return res.statusCode == 200;
-}
-
-function checkerMethod_is302(res) {
-  return res.statusCode == 302;
+function checkIfNotErrorCode(res) {
+	const pattern = /5[0-9]{2}|4[0-9]{2}/;
+	return !(pattern).test(res);
 }
 
 
@@ -76,20 +75,22 @@ postLoginPageOptions.setData({
 	agenciaCV: '', contaCV: '', VeroPay: 'N', Sequencia: '', PAN: '', Info: '',
 	JavaVersion: '?', Criptograma: '', Certificado: '', LoginCartao: 'N', LoginCartaoVirtual: 'N'
 });
-postLoginPageOptions.setCheckerMethod(checkerMethod_is302);
+postLoginPageOptions.setCheckerMethod(checkIfNotErrorCode);
 
 let getPassPageOptions = new BanrisulOptionsGet();
 getPassPageOptions.setPath('/brb/link/Brbw4Dhw_Login_Senha.aspx');
 
 let postPassPageOptions = new BanrisulOptionsPost();
-postPassPageOptions.setPath('/brb/link/Brbw4Dhw_Login_Senha.aspx');
+postPassPageOptions.setPath('/brb/link/Brbw4Dhw_Usuario_Logado.aspx');
 postPassPageOptions.setData({
 	__VIEWSTATE: '/wEPDwUKMTQ5MDIzODY2OA9kFgICAw9kFgICAQ9kFgICBQ8WAh4JaW5uZXJodG1sBR7CuyBBY2Vzc28gw6AgY29udGEgY29tIENhcnTDo29kZMGhIpzKHj8eWNbL1muON2VUAjcM',
 	__VIEWSTATEGENERATOR: 'AEA9E94F',
 	__EVENTVALIDATION: '/wEdAAIVK9fWcOCiH+WNRt+XRikkffys55W/gmrV2SyCTq7i980Zg83RwfPxXluYjYce0BCK7Znd',
 	Sequencia: ''
 });
-postPassPageOptions.setCheckerMethod(checkerMethod_is302);
+postPassPageOptions.setCheckerMethod(checkIfNotErrorCode);
+
+logger.info('postPassPageOptions ' + JSON.stringify(postPassPageOptions))
 
 let getUsuarioLogadoPageOptions = new BanrisulOptionsGet();
 getUsuarioLogadoPageOptions.setPath('/brb/link/Brbw4Dhw_Usuario_Logado.aspx');
