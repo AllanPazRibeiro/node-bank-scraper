@@ -9,7 +9,6 @@ const loggerMiddleware = require('middleware/logger');
 const cors = require('cors');
 const apiRouter =  express.Router();
 const v1Router = express.Router();
-const routes = require('../../routes');
 const bodyParser = require("body-parser");
 
 app.use(cors({
@@ -25,16 +24,12 @@ app.use(loggerMiddleware);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false}));
 
-app.use('/api', apiRouter)
-apiRouter.use('/v1', v1Router);
+app.use('/api', apiRouter);
 
 app.set('view engine', 'jade');
 app.get('/', function (req, res) {
 	res.render('front');
 });
-
-app.use('/', routes);
-
 
 httpServer.listen(port, function(){
 	app._router.stack.forEach(function(r){

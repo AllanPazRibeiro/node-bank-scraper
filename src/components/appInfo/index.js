@@ -1,3 +1,3 @@
 const { app, apiRouter } = require('interfaces/http');
-app.use('banrisul/', require('./routes'));
-apiRouter.use('banrisul/', require('./routes'));
+app.use('/version', require('./routes'));
+apiRouter.use('/version', require('./routes'));

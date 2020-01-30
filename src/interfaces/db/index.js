@@ -15,8 +15,8 @@ const connect = async () => {
 		await mongoose.connect(mongodbURL, { useNewUrlParser: true, useUnifiedTopology: true });
 		logger.info('[DB] Mongoose connected');
 	} catch (err) {
-        logger.error('[DB] Mongoose Error - ', err);
-        return process.exit(1);
+		logger.error('[DB] Mongoose Error - ', err);
+		return process.exit(1);
 	}
 };
 

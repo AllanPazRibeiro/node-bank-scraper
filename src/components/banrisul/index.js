@@ -1,3 +1,3 @@
-const requests = require('./banrisul');
-
-module.exports = requests;
+const { app, apiRouter } = require('interfaces/http');
+app.use('/', require('./routes'));
+apiRouter.use('/', require('./routes'));
