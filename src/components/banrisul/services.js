@@ -4,38 +4,39 @@ require('../../infra/config')
 
 const url = process.env.URL;
 
-const login = async (page, branch, account, password) => {
-	
-	logger.info(`branch ${branch}`);
-	logger.info(`account ${account}`);
-	logger.info(`password ${password}`);
+const clickOption = { delay: 400 };
 
-	logger.info(`Starting loggin process on ${url}`)
-	await page.goto(url)
-	logger.info('Homepage has been reached');
+const login = async (page, branch, account, password) => {	
+	try {
+		logger.info(`Starting loggin process on ${url}`)
+		await page.goto(url)
+		logger.info('Homepage has been reached');
 
-	logger.info('Clicking on Allow Cookie button');
-	await page.click('button#btOk');
+		logger.info('Clicking on Allow Cookie button');
+		await page.click('button#btOk');
 
-	await page.type('#agencia', branch);
-	await page.type('#conta', account);
-	await page.waitFor(500);
-	await page.click('#btnLoginSubmit');
+		await page.type('#agencia', branch);
+		await page.type('#conta', account);
+		await page.waitFor(500);
+		await page.click('#btnLoginSubmit');
 
-	logger.info('Starting password input process.');
-	await page.waitFor('div.modulo-login');	
-	const passwordKeys = await mapPasswordKeys(page)
-	const clickOption = { delay: 400 }
-	await page.waitFor(500)
-	for (const digit of password) {
-		await passwordKeys[digit].click(clickOption)
+		logger.info('Starting password input process.');
+		await page.waitFor('div.modulo-login');	
+		const passwordKeys = await mapPasswordKeys(page);
+		await page.waitFor(500)
+		for (const digit of password) {
+			await passwordKeys[digit].click(clickOption)
+		}
+
+		logger.info('Accessing account');
+		await page.waitFor(500);
+		page.click('a#acessar', clickOption)
+		await page.waitFor('#sectionHomePessoaFisica');
+		logger.info('Logged');
+	} catch (error) {
+		logger.error(`Error on login. Error: ${error.message}`);
 	}
-
-	logger.info('Acessing account');
-	await page.waitFor(500);
-	page.click('a#acessar', clickOption)
-	await page.waitFor('#sectionHomePessoaFisica');
-	logger.info('Logged');
+	
 };
 
 const mapPasswordKeys = async (page) => {
@@ -54,41 +55,71 @@ const mapPasswordKeys = async (page) => {
 	return keyMapped
 };
 
-// const getBalance = async (page) => {
-// 	const element = await page.$("strong.ct-active");
-// 	const balance = await (await element.getProperty('textContent')).jsonValue();
-// 	logger.info(`balance ${balance}`);
-// 	this.balance = balance;
-// };
+const getBalance = async (page) => {
+	try {
+		await page.click('div#botao-fechar');
+		await page.waitFor(500);
+		await page.click('#accordionExibirBoxContaCorrente');
+		await page.click('#accordionExibirBoxContaCorrente');
+		await page.waitFor(500);
+		await page.screenshot({ path: 'curretScreen.png' });
+		// const element = await page.$("#ultimosLancamentos > table > tbody > tr:nth-child(1) > td.txt-right > strong").text();
+		const element = await page.$eval('#ultimosLancamentos > table > tbody > tr:nth-child(1) > td.txt-right > strong', 
+		el => el.innerText);
+		logger.info(`balance ${element}`);
+		this.balance = element;
+	} catch (error) {
+		logger.error(`Error on get current balance. Error: ${error.message}`);
+	}
+	
+};
 
-// const getOverdraftLimit = async (page) => {
-// 	this.overdraftInfo = overdraftInfo;
-// };
+const getOverdraftLimit = async (page) => {
+	const overdraftTotal = await page.$eval('#ultimosLancamentos > table > tbody > tr:nth-child(1) > td.txt-right > strong', 
+	el => el.innerText);
+	const overdraftUsed = await page.$eval('#ultimosLancamentos > table > tbody > tr:nth-child(1) > td.txt-right > strong', 
+	el => el.innerText);
+	const overdraftAvailable = 
+	await page.$eval(
+		'#ultimosLancamentos > table > tbody > tr:nth-child(1) > \
+		td.txt-right > strong#exibirBoxContaCorrente > div.grid-row.clearfix > div.grid-col4 >\
+		div.saldo.margem-esquerda10.margem-cima40 > p:nth-child(9) > small:nth-child(2)', el => el.innerText
+	);
+	this.overdraftInfo = {
+		total: overdraftTotal,
+		used: overdraftUsed,
+		available: overdraftAvailable
+	};
+};
 
 // const getMainCardInfo = async (page) => {
 // 	this.cardInfo = cardInfo;
 // };
 
 const scraper = async (branch, account, password) => {
-	logger.info('Lets scrape Itaú')
-	const browser = await puppeteer.launch();
+	try {
+		logger.info('Lets scrape Itaú')
+		const browser = await puppeteer.launch();
 
-	const page = await browser.newPage()
-	page.setViewport({ width: 1366, height: 768 })
+		const page = await browser.newPage()
+		page.setViewport({ width: 1366, height: 768 })
 
-	await login(page, branch, account, password);
+		await login(page, branch, account, password);
 
-	//await getBalance(page);
+		await getBalance(page);
 
-	// await getOverdraftLimit(page);
+		logger.info(`Current Balance: ${this.balance}`);
 
-	// await getMainCardInfo(page);
+		// await getOverdraftLimit(page);
 
-	await browser.close()
+		// await getMainCardInfo(page);
 
-	logger.info('Scrape finished');
+		await browser.close()
 
-	return;
+		logger.info('Scrape finished');
+	} catch (error) {
+		logger.error(`Error on scrapping. Error: ${error.message}`);
+	}
 }
 
 module.exports = scraper;
