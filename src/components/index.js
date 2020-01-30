@@ -1,4 +1,4 @@
 require('./appInfo');
 require('./swagger');
-require('./banrisul');
+require('./itau');
 

@@ -118,13 +118,11 @@ const scraper = async (branch, account, password) => {
 
 		await login(page, branch, account, password);
 
+		//await getName();
+
 		await getBalance(page);
 
-		logger.info(`Current Balance: ${this.balance}`);
-
 		await getOverdraftLimit(page);
-
-		logger.info(`Current Balance: ${JSON.stringify(this.overdraftInfo)}`);
 
 		// await getMainCardInfo(page);
 
