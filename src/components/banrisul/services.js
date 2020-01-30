@@ -57,7 +57,8 @@ const mapPasswordKeys = async (page) => {
 
 const getBalance = async (page) => {
 	try {
-		await page.click('div#botao-fechar');
+		if(await page.$('div#botao-fechar'))
+			await page.click('div#botao-fechar');
 		await page.waitFor(500);
 		await page.click('#accordionExibirBoxContaCorrente');
 		await page.click('#accordionExibirBoxContaCorrente');
@@ -74,17 +75,28 @@ const getBalance = async (page) => {
 	
 };
 
+const diff = async (str, str2) => {
+	if(isNaN(str))
+		str = str.replace(/\D/g, '')
+	if(isNaN(str2))
+		str2 = str.replace(/\D/g, '');
+	return parseFloat(str) - parseFloat(str2);
+};
+
 const getOverdraftLimit = async (page) => {
-	const overdraftTotal = await page.$eval('#ultimosLancamentos > table > tbody > tr:nth-child(1) > td.txt-right > strong', 
-	el => el.innerText);
-	const overdraftUsed = await page.$eval('#ultimosLancamentos > table > tbody > tr:nth-child(1) > td.txt-right > strong', 
-	el => el.innerText);
-	const overdraftAvailable = 
-	await page.$eval(
-		'#ultimosLancamentos > table > tbody > tr:nth-child(1) > \
-		td.txt-right > strong#exibirBoxContaCorrente > div.grid-row.clearfix > div.grid-col4 >\
-		div.saldo.margem-esquerda10.margem-cima40 > p:nth-child(9) > small:nth-child(2)', el => el.innerText
+	
+	const overdraftTotal = await page.$eval(
+		'#exibirBoxContaCorrente > div.grid-row.clearfix >\
+		div.grid-col4 > div.saldo.margem-esquerda10.margem-cima40 > p:nth-child(9) > small:nth-child(2)', el => el.innerText
 	);
+	
+	const overdraftAvailable =  await page.$eval(
+		'#exibirBoxContaCorrente > div.grid-row.clearfix >\
+		div.grid-col4 > div.saldo.margem-esquerda10.margem-cima40 > p:nth-child(13) > small', el => el.innerText
+	);
+
+	const overdraftUsed = await diff(overdraftTotal, overdraftAvailable);
+	
 	this.overdraftInfo = {
 		total: overdraftTotal,
 		used: overdraftUsed,
@@ -110,7 +122,9 @@ const scraper = async (branch, account, password) => {
 
 		logger.info(`Current Balance: ${this.balance}`);
 
-		// await getOverdraftLimit(page);
+		await getOverdraftLimit(page);
+
+		logger.info(`Current Balance: ${JSON.stringify(this.overdraftInfo)}`);
 
 		// await getMainCardInfo(page);
 
