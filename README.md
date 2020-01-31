@@ -1,14 +1,15 @@
 # NodeJs Bank scraper (Itaú)
 
 This project is the result of a test that consists of a bank scraper using the follow components
+
 Components:
 
--[Node](https://nodejs.org/en/)
--[Express](https://expressjs.com/pt-br/)
--[MongoDB](https://www.mongodb.com/)
--[Pug](https://pugjs.org/api/getting-started.html)
--[Puppeteer](https://github.com/puppeteer/puppeteer)
--[Docker](https://www.docker.com/)
+- [Node](https://nodejs.org/en/)
+- [Express](https://expressjs.com/pt-br/)
+- [MongoDB](https://www.mongodb.com/)
+- [Pug](https://pugjs.org/api/getting-started.html)
+- [Puppeteer](https://github.com/puppeteer/puppeteer)
+- [Docker](https://www.docker.com/)
 
 
 Requirements:
