@@ -1,6 +1,6 @@
 # NodeJs Bank scraper (Itaú)
 
-This project is the result of a test that consists of a bank scraper using the follow components
+This project is the result of a test that consists of a bank scraper using the follow components:
 
 Components:
 
@@ -26,4 +26,4 @@ npm i
 docker-compose up -d
 npm run dev
 ```
-Then visit [http://localhost:3000/](http://localhost:5000/)
+Then visit [http://localhost:5000/](http://localhost:5000/)
