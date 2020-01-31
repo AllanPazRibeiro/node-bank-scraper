@@ -1,0 +1,59 @@
+openapi: 3.0.0
+info:
+  description: |
+    A ticket manager service.
+    This service is resposible to deal with tickets (search, close and create).
+  title: Database API
+  version: 0.0.1
+servers:
+  - description: Local server, it only serves locally.
+    url: http://localhost:{port}/
+    variables:
+      port:
+        default: '5000'
+paths:
+  /:
+    get:
+      description: Request the scrapped data from bank.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/request_body'
+      responses:
+        201:
+          description: List maintenance tickets.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_body'
+      tags:
+        - Bank Scraper
+components:
+  schemas:
+    request_body:
+      description: Playload used logging on the internet banking
+      required:
+        - branch
+        - account
+        - password
+      properties:
+        branch:
+          type: string
+        account:
+          type: string
+        password:
+          type: string
+    request_body:
+      description: Request body
+      properties:
+        id: 
+          example: '8908'
+          type: string
+        desc: 
+          example: Resolvido afuzel
+          type: string
+        startTime: 
+          example: '00:00'
+          type: string
+  

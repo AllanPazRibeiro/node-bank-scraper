@@ -27,3 +27,9 @@ docker-compose up -d
 npm run dev
 ```
 Then visit [http://localhost:5000/](http://localhost:5000/)
+
+## Swagger
+If you want to test the route on swagger, use the path below
+```sh
+http://localhost:5000/api/v1/doc/
+```

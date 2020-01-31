@@ -6,30 +6,26 @@ const app = express();
 const httpServer = http.createServer(app);
 const port = process.env.PORT || 3000;
 const loggerMiddleware = require('middleware/logger');
-const cors = require('cors');
+const swagger = express.Router();
 const apiRouter =  express.Router();
-const v1Router = express.Router();
 const bodyParser = require("body-parser");
-
-app.use(cors({
-	origin: [
-		`http://localhost:${process.env.PORT}`,
-	],
-	methods: ['GET', 'POST', 'PUT', 'DELETE'],
-	allowedHeaders: ['Content-Type', 'Authorization']
-}))
+const swaggerMiddleware = require('../../components/swagger/swaggerMiddleweare')
 
 app.use(loggerMiddleware);
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false}));
-
-app.use('/api', apiRouter);
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.set('view engine', 'pug');
 app.get('/', function (req, res) {
 	res.render('front');
 });
+
+app.use('/api', apiRouter);
+apiRouter.use('/v1', swagger);
+swagger.use('/doc', swaggerMiddleware);
+
+
 
 httpServer.listen(port, function(){
 	app._router.stack.forEach(function(r){
@@ -44,6 +40,5 @@ httpServer.listen(port, function(){
 module.exports = {
 	httpServer,
 	app,
-	apiRouter,
-	v1Router
+	swagger
 };
