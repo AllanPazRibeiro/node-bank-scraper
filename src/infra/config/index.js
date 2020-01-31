@@ -16,7 +16,9 @@ Object.keys(envConfig).forEach((key) => {
 
 const environmentVariables = [
 	{ name: 'PORT', required: true, printOnStart: true },
-	{ name: 'TZ', required: false, printOnStart: true }
+	{ name: 'MONGO_HOST', required: false, printOnStart: true },
+	{ name: 'MONGO_PORT', required: true, printOnStart: true },
+	{ name: 'MONGO_DATA_BASE', required: false, printOnStart: true }
 ];
 
 

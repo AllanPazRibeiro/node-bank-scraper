@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({ extended: false}));
 
 app.use('/api', apiRouter);
 
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 app.get('/', function (req, res) {
 	res.render('front');
 });

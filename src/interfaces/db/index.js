@@ -3,10 +3,8 @@ const logger = require('infra/logger');
 const host = process.env.MONGO_HOST;
 const port = process.env.MONGO_PORT;
 const dataBase = process.env.MONGO_DATA_BASE;
-const userName = process.env.MONGO_USERNAME;
-const password = process.env.MONGO_PASSWORD;
 
-const mongodbURL = `mongodb://${userName}:${password}@${host}:${port}/${dataBase}`;
+const mongodbURL = `mongodb://${host}:${port}/${dataBase}`;
 
 mongoose.Promise = global.Promise;
 

@@ -1,0 +1,16 @@
+version: '3'
+services:
+  mongo:
+    image: mongo:3.4.9-jessie
+    restart: always
+    container_name: bank-scraper-mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - ${DATA_PATH_HOST}/mongo:/data/db:rw
+    networks:
+      - database
+
+networks:
+  database:
+    driver: ${NETWORKS_DRIVER}
