@@ -175,7 +175,7 @@ const scraper = async (branch, account, password) => {
 
 		const page = await browser.newPage();
 
-		page.setViewport({ width: 1366, height: 768 })
+		page.setViewport({ width: 1366, height: 768 });
 
 		await login(page, branch, account, password);
 

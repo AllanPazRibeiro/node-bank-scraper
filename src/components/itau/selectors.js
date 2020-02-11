@@ -38,7 +38,7 @@ module.exports = {
 		div.saldo.margem-esquerda10.margem-cima40>p:nth-child(13)>small',
 		
 		//Card Info
-		cardName: '#carouselExampleSlidesOnly>div>div.carousel-item.ng-scope.active >\
+		cardName: '#carouselExampleSlidesOnly>div>div.carousel-item.ng-scope.active>\
 		cpv-cartao>div>p.cartao__titulo.ng-binding',
 		
 		dueDate: '#appController>div:nth-child(1)>div>cpv-page-header>section>\

@@ -6,7 +6,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development NODE_PATH=src node .",
     "dev": "cross-env  NODE_ENV=development NODE_PATH=src nodemon --inspect=9230 .",
-    "test": "cross-env NODE_ENV=development NODE_PATH=src nyc --reporter=lcov mocha \"test/**\"",
+    "test": "cross-env NODE_ENV=development NODE_PATH=src nyc --reporter=lcov mocha ./src/tests",
     "lint": "eslint ."
   },
   "repository": {
@@ -16,7 +16,6 @@
   "author": "Allan Ribeiro",
   "license": "ISC",
   "dependencies": {
-    "activedirectory": "^0.7.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
@@ -25,7 +24,6 @@
     "express": "^4.17.1",
     "express-status-monitor": "^1.2.8",
     "jade": "^1.11.0",
-    "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.27",
     "mongoose": "^5.7.8",
@@ -39,6 +37,7 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
     "eslint": "^6.6.0",
     "mocha": "^6.2.2",
     "nodemon": "^1.19.4",
